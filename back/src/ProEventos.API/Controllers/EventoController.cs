@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using ProEventos.API.Data;
-using ProEventos.API.Models;
-
+using ProEventos.Domain;
 
 namespace ProEventos.API.Controllers
 {
@@ -14,18 +12,26 @@ namespace ProEventos.API.Controllers
     [Route("api/[controller]")]
     public class EventoController : ControllerBase
     {
-        private readonly ProEventosContext _context;
-        public EventoController(ProEventosContext context)
-        {
-            _context = context;
 
+        private readonly IMediator _mediator;
+
+        public EventoController(IMediator mediator)
+        {
+            _mediator = mediator;
         }
 
 
         [HttpGet]
-        public IEnumerable<Evento> Get()
+        public async Task<IActionResult> Get()
         {
-            return _context.Eventos;
+            try{
+            
+                return Ok("Olá");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
