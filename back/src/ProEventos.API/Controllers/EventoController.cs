@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProEventos.Application.Interfaces;
 using ProEventos.Domain;
 
 namespace ProEventos.API.Controllers
@@ -14,9 +16,11 @@ namespace ProEventos.API.Controllers
     {
 
         private readonly IMediator _mediator;
+        private readonly IEventoService _eventoService;
 
-        public EventoController(IMediator mediator)
+        public EventoController(IEventoService eventoService, IMediator mediator)
         {
+            _eventoService = eventoService;
             _mediator = mediator;
         }
 
@@ -24,13 +28,15 @@ namespace ProEventos.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            try{
-            
-                return Ok("Olá");
+            try
+            {
+                var eventos = await _eventoService.GetAllEventosAsync(true);
+                if (eventos == null) return NotFound("Nenhum evento encontrado");
+                return Ok(eventos);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar eventos. Erro {ex.Message}");
             }
         }
 

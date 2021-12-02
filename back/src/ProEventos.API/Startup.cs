@@ -14,7 +14,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ProEventos.Application;
+using ProEventos.Application.Interfaces;
 using ProEventos.Persistence;
+using ProEventos.Persistence.Interfaces;
 
 namespace ProEventos.API
 {
@@ -30,18 +33,23 @@ namespace ProEventos.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-      
+
 
             services.AddDbContext<ProEventosContext>(
                 //Fazer referencia do banco de dados esperado pelo context
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             );
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddScoped<IEventoService, EventoService>();
+            services.AddScoped<IChangePersistence, ChangePersistence>();
+            services.AddScoped<IEventoPersistence, EventoPersistence>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProEventos.API", Version = "v1" });
             });
-            services.AddMediatR(typeof(Startup));          
+            services.AddMediatR(typeof(Startup));
+            //services.AddMediatR(typeof(EventoCommand).GetTypeInfo().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

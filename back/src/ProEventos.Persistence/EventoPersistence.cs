@@ -30,7 +30,7 @@ namespace ProEventos.Persistence
             return await query.ToArrayAsync();
         }
 
-        public async Task<Evento> GetAllEventoById(int EventoId, bool includePalestrantes = false)
+        public async Task<Evento> GetAllEventoByIdAsync(int eventoId, bool includePalestrantes = false)
         {
             IQueryable<Evento> query = _context.Eventos
                 .Include(e => e.Lotes)
@@ -43,7 +43,7 @@ namespace ProEventos.Persistence
                     .ThenInclude(e => e.Palestrante);
             }
 
-            query = query.OrderBy(e => e.Id).Where(e => e.Id == EventoId);
+            query = query.OrderBy(e => e.Id).Where(e => e.Id == eventoId);
             return await query.FirstOrDefaultAsync();
         }
 
