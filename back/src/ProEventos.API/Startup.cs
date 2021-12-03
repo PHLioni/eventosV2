@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ProEventos.Application;
+using ProEventos.Application.Commands;
 using ProEventos.Application.Interfaces;
 using ProEventos.Persistence;
 using ProEventos.Persistence.Interfaces;
@@ -50,7 +51,7 @@ namespace ProEventos.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProEventos.API", Version = "v1" });
             });
             services.AddMediatR(typeof(Startup));
-            //services.AddMediatR(typeof(EventoCommand).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(EventoCommand).GetTypeInfo().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
