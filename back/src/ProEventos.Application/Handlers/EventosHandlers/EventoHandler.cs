@@ -2,12 +2,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
-using ProEventos.Application.Commands;
+using ProEventos.Application.Commands.EventosCommands;
 using ProEventos.Application.Dtos;
-using ProEventos.Application.Interfaces;
 using ProEventos.Persistence.Interfaces;
 
-namespace ProEventos.Application.Handlers
+namespace ProEventos.Application.Handlers.EventosHandlers
 {
     public class EventoHandler : IRequestHandler<EventoCommand, EventoDto[]>
     {
@@ -27,11 +26,6 @@ namespace ProEventos.Application.Handlers
 
             return await Task.FromResult(_mapper.Map<EventoDto[]>(eventos));
 
-            /*
-            var eventos = await _eventoService.GetAllEventosAsync(true);
-
-            return await Task.FromResult(_mapper.Map<EventoDto[]>(eventos));
-            */
         }
     }
 }

@@ -15,8 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ProEventos.Application;
-using ProEventos.Application.Commands;
-using ProEventos.Application.Interfaces;
+using ProEventos.Application.Commands.EventosCommands;
 using ProEventos.Persistence;
 using ProEventos.Persistence.Interfaces;
 
@@ -43,7 +42,7 @@ namespace ProEventos.API
             services.AddControllers()
                 .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddScoped<IEventoService, EventoService>();
+           
             services.AddScoped<IChangePersistence, ChangePersistence>();
             services.AddScoped<IEventoPersistence, EventoPersistence>();
             services.AddSwaggerGen(c =>
@@ -52,6 +51,7 @@ namespace ProEventos.API
             });
             services.AddMediatR(typeof(Startup));
             services.AddMediatR(typeof(EventoCommand).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(DeleteEventoCommand).GetTypeInfo().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
