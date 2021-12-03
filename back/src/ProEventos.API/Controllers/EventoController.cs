@@ -39,11 +39,5 @@ namespace ProEventos.API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar eventos. Erro {ex.Message}");
             }
         }
-
-        [HttpGet("{id}")]
-        public IEnumerable<Evento[]> GetById(int id)
-        {
-            return null;
-        }
     }
 }
